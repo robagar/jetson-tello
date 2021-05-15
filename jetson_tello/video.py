@@ -18,6 +18,6 @@ def h264_frame_to_numpy_array(frame):
         raise FrameDecodeError()
 
 def h264_frame_to_cuda(frame):
-    array, width, height = frame_to_numpy_array(frame)
+    array, width, height = h264_frame_to_numpy_array(frame)
     cuda = jetson.utils.cudaFromNumpy(array)
     return cuda, width, height
