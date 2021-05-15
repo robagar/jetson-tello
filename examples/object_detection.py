@@ -14,7 +14,9 @@ for frame in frames:
 
         detections = net.Detect(cuda)
 
-        print(f'frame {i} detections:', detections)
+        print(f'frame {i} detections:')
+        for d in  detections:
+            print(d)
 
         i += 1
     except FrameDecodeError:
