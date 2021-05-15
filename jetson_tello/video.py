@@ -11,7 +11,7 @@ def h264_frame_to_numpy_array(frame):
     (frame_info, num_bytes) = decoder.decode_frame(frame)
     (frame_data, width, height, row_size) = frame_info
     if width and height:
-        flat_array = np.frombuffer(frame_data)
+        flat_array = np.frombuffer(frame_data, dtype=np.ubyte)
         array = np.reshape(flat_array, (height, width, 3))
         return array, width, height
     else:
