@@ -1,4 +1,4 @@
-from jetson_tello import h264_frame_to_numpy_array, NotAFrame
+from jetson_tello import h264_frame_to_numpy_array, FrameDecodeError
 
 frames = [
 b'\x00\x00\x00\x01gM@(\x95\xa0<\x05\xb9',
@@ -26,7 +26,7 @@ for frame in frames:
 
         print(f'frame {i} size: {width} x {height}')
         print(array)
-    except NotAFrame:
-        print(f'frame {i} - (not a frame)')
+    except FrameDecodeError:
+        print(f'frame {i} - (decode error)')
     i += 1
       
