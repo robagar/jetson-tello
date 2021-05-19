@@ -4,7 +4,7 @@ class InvalidCocoClassError(Exception):
     def __init__(self, id):
         super().__init__(f'invalid COCO class id: {id}')
 
-def get_coco_class(id):
+def get_coco_class_from_id(id):
     try:
         return coco_classes_by_id[id]
     except IndexError:

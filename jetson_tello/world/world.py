@@ -5,7 +5,7 @@ class WorldObserver:
         pass
 
 class World:
-    def __init__(self, observer):
+    def __init__(self, observer = None):
         self._observer = observer
         self._things_by_coco_class_id = {}
 
@@ -22,8 +22,11 @@ class World:
                 thing = Thing(d)
                 m[cid] = thing
                 is_new_thing = True
-            self._observer.on_thing_detected(thing, is_new_thing)
+            if self._observer:
+                self._observer.on_thing_detected(thing, is_new_thing)
 
     @property
     def things(self):
         return self._things_by_coco_class_id.values()
+
+    def get_thing_of_class
