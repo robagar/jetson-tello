@@ -10,7 +10,7 @@ net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
 human = None
 human_detected = asyncio.Condition()
 
-class BallObserver(WorldObserver):
+class HumanObserver(WorldObserver):
     human_class = get_coco_class_by_name("person")
 
     async def on_thing_detected(self, thing, is_new_thing):
@@ -25,7 +25,7 @@ class BallObserver(WorldObserver):
                 human_detected.release()
 
 
-world = World(BallObserver())
+world = World(HumanObserver())
 
 async def process_frame(frame):
     try:
