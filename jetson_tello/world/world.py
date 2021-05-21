@@ -1,7 +1,7 @@
 from .thing import Thing
 
 class WorldObserver:
-    def on_thing_detected(self, thing, is_new_thing):
+    async def on_thing_detected(self, thing, is_new_thing):
         pass
 
 class World:
@@ -9,7 +9,7 @@ class World:
         self._observer = observer
         self._things_by_coco_class_id = {}
 
-    def update_things(self, detected_objects):
+    async def update_things(self, detected_objects):
         # for now there can only be one thing of a given class in the world
         for d in detected_objects:
             cid = d.ClassID
@@ -23,7 +23,7 @@ class World:
                 m[cid] = thing
                 is_new_thing = True
             if self._observer:
-                self._observer.on_thing_detected(thing, is_new_thing)
+                await self._observer.on_thing_detected(thing, is_new_thing)
 
     @property
     def things(self):
