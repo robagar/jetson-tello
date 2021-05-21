@@ -9,7 +9,11 @@ class FrameDecodeError(Exception):
 decoder = h264decoder.H264Decoder()
 
 def h264_frame_to_numpy_array(frame):
-    (frame_info, num_bytes) = decoder.decode_frame(frame)
+    try:
+        (frame_info, num_bytes) = decoder.decode_frame(frame)
+    except:
+        raise FrameDecodeError()
+
     (frame_data, width, height, row_size) = frame_info
     if width and height:
         flat_array = np.frombuffer(frame_data, dtype=np.ubyte)

@@ -29,4 +29,5 @@ class World:
     def things(self):
         return self._things_by_coco_class_id.values()
 
-    def get_thing_of_class
+    def get_thing_of_class(id):
+        return self._things_by_coco_class_id.get(id)

@@ -7,17 +7,7 @@ from tello_asyncio import Tello
 
 net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
 
-next_frame = None
-frame_available = asyncio.Condition()
-
 # world = World()
-
-def on_video_frame(frame):
-    global next_frame
-    async with frame_available:
-        next_frame = frame
-        frame_available.notify()
-
 
 def process_frame(frame):
     try:
@@ -36,21 +26,19 @@ async def main():
     global next_frame
 
     drone = Tello()
-    try:
-        await drone.connect()
-        await drone.start_video(on_video_frame)
-        # await drone.takeoff()
-        # await drone.turn_clockwise(360)
-        # await drone.land()
+    await drone.connect()
+    await drone.start_video()
+    await drone.connect_video()
 
-        while True:
-            async with frame_available:
-                await frame_available.wait()
-                frame = next_frame
-                next_frame = None
+    async def fly():
+        pass
 
+    async def process_video():
+        async for frame in drone.video_stream:
             process_frame(frame)
 
+    try:
+        await asyncio.wait([fly(), process_video()])
     finally:
         await drone.stop_video()
         await drone.disconnect()

@@ -1,6 +1,6 @@
 from time import time
-from ../coco import get_coco_class
-from ../video import video_x_to_local_azimuth, video_y_to_local_altitude
+from ..coco import get_coco_class
+from ..video import video_x_to_local_azimuth, video_y_to_local_altitude
 
 
 class Thing:
