@@ -2,12 +2,19 @@
 
 import asyncio
 import jetson.inference
-from jetson_tello import h264_frame_to_cuda, FrameDecodeError #, World, get_coco_class
+from jetson_tello import h264_frame_to_cuda, FrameDecodeError, World, WorldObserver, get_coco_class_by_name
 from tello_asyncio import Tello
 
 net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
 
-# world = World()
+class BallObserver(WorldObserver):
+    fruit_class = get_coco_class_by_name("sports ball")
+
+    def on_thing_detected(self, thing, is_new_thing):
+        if thing.coco_class is self.fruit_class:
+            print(('NEW ' if is_new_thing else '') + f'BALL {self.fruit_class.name} at {thing.local_azimuth}')
+
+world = World(BallObserver())
 
 def process_frame(frame):
     try:
@@ -15,9 +22,7 @@ def process_frame(frame):
 
         detections = net.Detect(cuda)
 
-        print(f'detections:')
-        for d in  detections:
-            print(d)
+        world.update_things(detections)
 
     except FrameDecodeError:
         pass    

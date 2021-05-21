@@ -1,5 +1,5 @@
 from time import time
-from ..coco import get_coco_class
+from ..coco import get_coco_class_by_id
 from ..video import video_x_to_local_azimuth, video_y_to_local_altitude
 
 
@@ -10,8 +10,9 @@ class Thing:
     def link_detected_object(self, detected_object):
         self._last_seen_at_time = time()
         self._most_recent_detected_object = detected_object
-        self._coco_class = get_coco_class(detected_object.ClassId)
-        self._confidence - detected_object.Confidence
+        self._coco_class = get_coco_class_by_id(detected_object.ClassID)
+        print(self._coco_class)
+        self._confidence = detected_object.Confidence
         x,y = detected_object.Center
         self._local_azimuth = video_x_to_local_azimuth(x)
         self._local_altitude = video_y_to_local_altitude(y)

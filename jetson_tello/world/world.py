@@ -12,7 +12,7 @@ class World:
     def update_things(self, detected_objects):
         # for now there can only be one thing of a given class in the world
         for d in detected_objects:
-            cid = d.ClassId
+            cid = d.ClassID
             m = self._things_by_coco_class_id
             try:
                 thing = m[cid]
