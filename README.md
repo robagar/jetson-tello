@@ -6,6 +6,10 @@ The primary function so far is to pipe video frame data from the drone through t
 
 Created for my autonomous drone project, [drone-braain](https://github.com/robagar/drone-braain). 
 
+Package [jetson-tello](https://pypi.org/project/jetson-tello/) on PyPi. 
+
+Full documentation on [Read the Docs](https://tello-asyncio.readthedocs.io/en/latest/).
+
 ## Prerequisites
 
 There are two prerequisites that require manual installation:
@@ -103,3 +107,11 @@ Which typically outputs a stream of results like this (along with a fair amount 
        -- Area:    682559
        -- Center:  (479.5, 363.171)
 ```
+
+## Version history
+
+** 1.0.0 **
+
+- Decode h.264 video frame data from the drone and load into NumPy arrays and CUDA memory
+- Face and object detection neural net examples
+- [Common Objects in Context](https://cocodataset.org/) (COCO) classes

@@ -35,7 +35,7 @@ def h264_frame_to_cuda(frame):
 
     :param frame: The raw frame data
     :type frame: bytes
-    :rtype: :class:`numpy.ndarray`
+    :rtype: :class:`cudaImage`
     :throws: :class:`jetson_tello.video.FrameDecodeError`
     '''
     array, width, height = h264_frame_to_numpy_array(frame)
