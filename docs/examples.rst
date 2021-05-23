@@ -4,7 +4,7 @@ Code examples
 H.264 frames to NumPy arrays
 ----------------------------
 
-Demonstrates the decoding of pre-captured video frames (of my cat, Marble) and loading into `NumPy arrays<https://numpy.org/doc/stable/reference/arrays.html>`_ suitable for analysis.
+Demonstrates the decoding of pre-captured video frames (of my cat, Marble) and loading into `NumPy arrays <https://numpy.org/doc/stable/reference/arrays.html>`_ suitable for analysis.
 
 .. literalinclude:: ../examples/h264_frames_to_numpy_arrays.py
    :language: python 
@@ -40,12 +40,13 @@ Pipes video frames captured from the flying Tello drone through the *facenet* de
 Face and object detection
 -------------------------
 
-As above, but also detecting objects in view at the same time.
+As face detection above, but also detecting objects in view at the same time.
 
 .. literalinclude:: ../examples/face_and_object_detection.py
    :language: python 
 
 Example output::
+
     faces:
     <detectNet.Detection object>
        -- ClassID: 0
