@@ -14,7 +14,7 @@ There are two prerequisites that require manual installation:
 
 * My fork of [h264decoder](https://github.com/robagar/h264decoder). This is identical to the [original repo](https://github.com/DaWelter/h264decoder) apart from building with the slightly old version of CMake (3.10) available on the Jetson.
 
-##Example code
+## Example code
 
 The [face_and_object_detection.py](./examples/face_and_object_detection.py) example demonstrates feeding video frames to object and face detection neural nets
 
