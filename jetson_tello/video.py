@@ -8,6 +8,14 @@ class FrameDecodeError(Exception):
 decoder = h264decoder.H264Decoder()
 
 def h264_frame_to_numpy_array(frame):
+    '''
+    Decodes raw h.264 frame data and copies it into a NumPy array ready for analysis.
+
+    :param frame: The raw frame data
+    :type frame: bytes
+    :rtype: :class:`numpy.ndarray`
+    :throws: :class:`jetson_tello.video.FrameDecodeError`
+    '''
     try:
         (frame_info, num_bytes) = decoder.decode_frame(frame)
     except:
@@ -22,6 +30,14 @@ def h264_frame_to_numpy_array(frame):
         raise FrameDecodeError()
 
 def h264_frame_to_cuda(frame):
+    '''
+    Decodes raw h.264 frame data and copies it into CUDA memory.
+
+    :param frame: The raw frame data
+    :type frame: bytes
+    :rtype: :class:`numpy.ndarray`
+    :throws: :class:`jetson_tello.video.FrameDecodeError`
+    '''
     array, width, height = h264_frame_to_numpy_array(frame)
     cuda = jetson.utils.cudaFromNumpy(array)
     return cuda, width, height

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from ast import literal_eval
 from jetson_tello import h264_frame_to_numpy_array, FrameDecodeError
 

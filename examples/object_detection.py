@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import jetson.inference
 from jetson_tello import h264_frame_to_cuda, FrameDecodeError
 

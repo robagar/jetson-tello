@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from pathlib import Path
 import jetson.utils
 from jetson_tello import h264_frame_to_cuda, FrameDecodeError
@@ -13,9 +15,13 @@ for frame in frames:
     try:
         cuda, width, height = h264_frame_to_cuda(frame)
 
+        print(f'frame {i}:')
+        print(cuda)
+
         file_path = f'h264_frames_to_cuda/frame-{i}.jpg'
-        print(file_path)
         jetson.utils.saveImageRGBA(file_path, cuda, width, height)
+        print(f'saved as {file_path}')
         i += 1
     except FrameDecodeError:
-        pass
+        print('(decode error, frame skipped)')
+    print('-----------------------------------------------------------------')
