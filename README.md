@@ -110,7 +110,7 @@ Which typically outputs a stream of results like this (along with a fair amount 
 
 ## Version history
 
-** 1.0.0 **
+**1.0.0**
 
 - Decode h.264 video frame data from the drone and load into NumPy arrays and CUDA memory
 - Face and object detection neural net examples
