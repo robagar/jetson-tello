@@ -37,3 +37,36 @@ Pipes video frames captured from the flying Tello drone through the *facenet* de
    :language: python 
 
 
+Face and object detection
+-------------------------
+
+As above, but also detecting objects in view at the same time.
+
+.. literalinclude:: ../examples/face_and_object_detection.py
+   :language: python 
+
+Example output::
+    faces:
+    <detectNet.Detection object>
+       -- ClassID: 0
+       -- Confidence: 0.809878
+       -- Left:    434.667
+       -- Top:     0
+       -- Right:   702.267
+       -- Bottom:  302.5
+       -- Width:   267.6
+       -- Height:  302.5
+       -- Area:    80949
+       -- Center:  (568.467, 151.25)
+    objects:
+    <detectNet.Detection object>
+       -- ClassID: 7
+       -- Confidence: 0.500977
+       -- Left:    0
+       -- Top:     7.30054
+       -- Right:   959
+       -- Bottom:  719.04
+       -- Width:   959
+       -- Height:  711.74
+       -- Area:    682559
+       -- Center:  (479.5, 363.171)

@@ -5,16 +5,23 @@ import jetson.inference
 from jetson_tello import h264_frame_to_cuda, FrameDecodeError
 from tello_asyncio import Tello
 
-net = jetson.inference.detectNet("facenet", threshold=0.5)
+face_detector = jetson.inference.detectNet("facenet", threshold=0.5)
+object_detector = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
 
 
 async def process_frame(frame):
     try:
         cuda, width, height = h264_frame_to_cuda(frame)
 
-        detections = net.Detect(cuda)
+        face_detections = face_detector.Detect(cuda)
+        object_detections = object_detector.Detect(cuda)
 
-        for d in detections:
+        print('faces:')
+        for d in face_detections:
+            print(d)
+
+        print('objects:')
+        for d in object_detections:
             print(d)
 
     except FrameDecodeError:
