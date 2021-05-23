@@ -8,6 +8,9 @@ The primary function so far is to pipe video frame data from the drone through t
 
 Created for my autonomous drone project, `drone\-braain <https://github.com/robagar/drone-braain>`_. 
 
+Package `jetson\-tello <https://pypi.org/project/jetson-tello/>`_ on PyPi. 
+
+
 Prerequisites
 -------------
 
