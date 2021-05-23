@@ -16,4 +16,7 @@ setup(name='jetson_tello',
       license='LGPL',
       packages=['jetson_tello'],
       zip_safe=False,
-      python_requires=">=3.6")
+      python_requires=">=3.6",
+      install_requires=[
+        'tello-asyncio >= 1.6.0'
+      ])
