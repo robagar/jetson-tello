@@ -10,14 +10,6 @@ object_detector = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
 
 results = []
 
-def decode_frame(frame):
-    try:
-        cuda, width, height = h264_frame_to_cuda(frame)
-
-    except FrameDecodeError:
-        print('(frame decode error)')
-        pass    
-
 
 def detect_objects_in_frame(frame_number, cuda):
         t0 = time()
@@ -38,9 +30,12 @@ async def main():
 
     async def fly():
         print('[flying] START')
-        # await drone.takeoff()
-        await asyncio.sleep(10)
-        # await drone.land()
+        await drone.takeoff()
+        for i in range(4):
+            await drone.move_forward(50)
+            await asyncio.sleep(3)
+            await drone.turn_clockwise(90)
+        await drone.land()
         print('[flying] END')
 
     async def watch_video():
@@ -51,16 +46,16 @@ async def main():
     async def detect_objects():
         print('[detect objects] START')
         while True:
-            print('[detect objects] waiting for frame...')
+            # print('[detect objects] waiting for frame...')
             f = await decoder.decoded_frame
-            print(f'[detect objects] frame {f.number}')
+            # print(f'[detect objects] frame {f.number}')
             try:
                 cuda = decoded_frame_to_cuda(f)
-                print('cuda:', cuda)
                 detect_objects_in_frame(f.number, cuda)
             except Exception as e:
-                print(f'error {e}')
-                print('(no frame)')
+                pass
+                # print(f'error {e}')
+                # print('(no frame)')
         print('[detect objects] END')
 
     try:
@@ -79,12 +74,19 @@ def format_detections(ds):
     ss = []
     for d in ds:
         c = get_coco_class_by_id(d.ClassID)
-        ss.append(c.name)
+        ss.append(f'{c.name} ({d.Confidence:0.2})')
     return ', '.join(ss)
 
 print('Results:')
+total_detection_time = 0
 for [i, t, ds] in results:
-    print(f'frame #{i}, detection time {t:0.4}s, ' + format_detections(ds))
+    print(f'  frame #{i}, detection time {t:0.4}s, ' + format_detections(ds))
+    total_detection_time += t
 
+num_results = len(results)
+print(f'total results: {num_results}')
+
+average_detection_time = total_detection_time / num_results
+print(f'average detection time: {average_detection_time:0.4}s')
 
 
