@@ -19,11 +19,11 @@ class H264DecoderAsync:
             try:
                 (frame_info, num_bytes) = self._decoder.decode_frame(frame)
                 (frame_data, width, height, row_size) = frame_info
-                print(width, height, len(frame_data))
-                self._decoded_frame = DecodedFrame(self._frame_number, width, height, frame_data)
-                self._frame_available.notify()
+                if width and height:
+                    self._decoded_frame = DecodedFrame(self._frame_number, width, height, frame_data)
+                    self._frame_available.notify()
             except Exception as e:
-                print(f'[H264DecoderAsync] error {e}')
+                print(f'[H264DecoderAsync] error: {e}')
                 self._decoded_frame = None
             self._frame_available.release()
 

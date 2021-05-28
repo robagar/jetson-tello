@@ -24,8 +24,6 @@ def detect_objects_in_frame(frame_number, cuda):
         object_detections = object_detector.Detect(cuda)
         dt = time() - t0
 
-        print(object_detections)
-
         results.append([frame_number, dt, object_detections])
 
 
@@ -41,7 +39,7 @@ async def main():
     async def fly():
         print('[flying] START')
         # await drone.takeoff()
-        await asyncio.sleep(2)
+        await asyncio.sleep(10)
         # await drone.land()
         print('[flying] END')
 
@@ -66,7 +64,10 @@ async def main():
         print('[detect objects] END')
 
     try:
-        await asyncio.wait([fly(), watch_video(), detect_objects()], return_when=asyncio.FIRST_COMPLETED)
+        finished, unfinished = await asyncio.wait([fly(), watch_video(), detect_objects()], return_when=asyncio.FIRST_COMPLETED)
+        for task in unfinished:
+            task.cancel()
+        await asyncio.wait(unfinished)
     finally:
         await drone.stop_video()
         await drone.disconnect()
@@ -74,12 +75,16 @@ async def main():
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
 
+def format_detections(ds):
+    ss = []
+    for d in ds:
+        c = get_coco_class_by_id(d.ClassID)
+        ss.append(c.name)
+    return ', '.join(ss)
+
 print('Results:')
 for [i, t, ds] in results:
     print(f'frame #{i}, detection time {t:0.4}s, ' + format_detections(ds))
 
-def format_detections(ds):
-    ns = ds.map(lambda d: get_coco_class_by_id(d.classID).name)
-    return ', '.join(ns)
 
 
