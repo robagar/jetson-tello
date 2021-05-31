@@ -42,7 +42,7 @@ class H264DecoderAsync:
                             on_frame_decoded(self._decoded_frame)
                     self._frame_available.notify()
             except Exception as e:
-                print(f'[H264DecoderAsync] error: {e}')
+                # print(f'[H264DecoderAsync] error: {e}')
                 self._decoded_frame = None
             self._frame_available.release()
 
