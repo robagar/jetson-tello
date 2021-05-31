@@ -1,2 +1,3 @@
 sphinx==4.0.0
 sphinx-rtd-theme==0.5.2
+tello-asyncio>=1.6.0
