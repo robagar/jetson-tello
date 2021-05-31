@@ -30,7 +30,7 @@ The [flying_drone_face_and_object_detection.py](./examples/flying_drone_face_and
 
 import asyncio
 import jetson.inference
-from jetson_tello import run_jetson_tello_app, get_coco_class
+from jetson_tello import run_jetson_tello_app
 
 
 face_detector = jetson.inference.detectNet("facenet", threshold=0.5)
@@ -97,3 +97,8 @@ Which typically outputs a stream of results like this (along with a fair amount 
 - Decode h.264 video frame data from the drone and load into NumPy arrays and CUDA memory
 - Face and object detection neural net examples
 - [Common Objects in Context](https://cocodataset.org/) (COCO) classes
+
+**1.1.0**
+
+- Fly drone and process CUDA frames app utility function
+- Decoded frame data object
