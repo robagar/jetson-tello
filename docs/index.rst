@@ -2,11 +2,15 @@
 jetson-tello
 ============
 
+.. image:: images/jetson_plus_tello.png
+
 Utility code for using the NVIDIA `Jetson <https://developer.nvidia.com/embedded/jetson-nano-developer-kit>`_ and `tello\-asyncio <https://tello-asyncio.readthedocs.io/en/latest/>`_ to interact with the `Tello EDU <https://www.ryzerobotics.com/tello-edu>`_ drone.
 
-The primary function so far is to pipe video frame data from the drone through to neural networks running on the Jetson, typically for object or face detection.
+The primary function so far is to pipe video frame data from the drone through to neural networks running on the Jetson, typically for object or face detection.  
 
-Created for my autonomous drone project, `drone\-braain <https://github.com/robagar/drone-braain>`_. 
+Most importantly, the frame data analysis can take as much time as it needs.  Frames are skipped if needed to keep up with the live video stream. 
+
+Created for my autonomous drone hobby project, `drone\-braain <https://github.com/robagar/drone-braain>`_, which is very much in its infancy. 
 
 Package `jetson\-tello <https://pypi.org/project/jetson-tello/>`_ on PyPi. 
 

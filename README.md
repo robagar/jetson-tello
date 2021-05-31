@@ -1,10 +1,12 @@
 # jetson-tello
 
+![Jetson plus Tello](./docs/images/jetson_plus_tello.png)
+
 Utility code for using the NVIDIA [Jetson](https://developer.nvidia.com/embedded/jetson-nano-developer-kit) and [tello-asyncio](https://tello-asyncio.readthedocs.io/en/latest/) to interact with the [Tello EDU](https://www.ryzerobotics.com/tello-edu) drone.
 
 The primary function so far is to pipe video frame data from the drone through to neural networks running on the Jetson, typically for object or face detection.
 
-Created for my autonomous drone project, [drone-braain](https://github.com/robagar/drone-braain). 
+Created for my autonomous drone hobby project, [drone-braain](https://github.com/robagar/drone-braain), which is very much in its infancy. 
 
 Package [jetson-tello](https://pypi.org/project/jetson-tello/) on PyPi. 
 
@@ -28,55 +30,35 @@ The [face_and_object_detection.py](./examples/face_and_object_detection.py) exam
 
 import asyncio
 import jetson.inference
-from jetson_tello import h264_frame_to_cuda, FrameDecodeError
-from tello_asyncio import Tello
+from jetson_tello import run_jetson_tello_app, get_coco_class
+
 
 face_detector = jetson.inference.detectNet("facenet", threshold=0.5)
 object_detector = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
 
 
-async def process_frame(frame):
-    try:
-        cuda, width, height = h264_frame_to_cuda(frame)
+def detect_faces_and_objects(drone, frame, cuda):
+    face_detections = face_detector.Detect(cuda)
+    object_detections = object_detector.Detect(cuda)
 
-        face_detections = face_detector.Detect(cuda)
-        object_detections = object_detector.Detect(cuda)
+    print('faces:')
+    for d in face_detections:
+        print(d)
 
-        print('faces:')
-        for d in face_detections:
-            print(d)
+    print('objects:')
+    for d in object_detections:
+        print(d)
 
-        print('objects:')
-        for d in object_detections:
-            print(d)
 
-    except FrameDecodeError:
-        pass    
+async def fly(drone):
+    await drone.takeoff()
+    for i in range(4):
+        await drone.turn_clockwise(90)
+        await asyncio.sleep(3)
+    await drone.land()
 
-async def main():
-    global next_frame
 
-    drone = Tello()
-
-    await drone.wifi_wait_for_network()
-    await drone.connect()
-    await drone.start_video()
-
-    async def fly():
-        await drone.takeoff()
-
-    async def process_video():
-        async for frame in drone.video_stream:
-            await process_frame(frame)
-
-    try:
-        await asyncio.wait([fly(), process_video()])
-    finally:
-        await drone.stop_video()
-        await drone.disconnect()
-
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+run_jetson_tello_app(fly, process_frame=detect_faces_and_objects)
 ```
 
 Which typically outputs a stream of results like this (along with a fair amount of spam from the h.264 decoder):
