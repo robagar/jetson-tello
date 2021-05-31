@@ -2,7 +2,7 @@
 
 import asyncio
 import jetson.inference
-from jetson_tello import run_jetson_tello_app, get_coco_class
+from jetson_tello import run_jetson_tello_app
 
 
 face_detector = jetson.inference.detectNet("facenet", threshold=0.5)

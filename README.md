@@ -22,7 +22,7 @@ There are two prerequisites that require manual installation:
 
 ## Example code
 
-The [face_and_object_detection.py](./examples/face_and_object_detection.py) example demonstrates feeding video frames to object and face detection neural nets
+The [flying_drone_face_and_object_detection.py](./examples/flying_drone_face_and_object_detection.py) example demonstrates feeding video frames to object and face detection neural nets
 
 
 ``` python
