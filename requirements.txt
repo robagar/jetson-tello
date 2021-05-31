@@ -1,1 +1,2 @@
+numpy>=1.20.3
 tello-asyncio>=1.6.0
