@@ -2,7 +2,7 @@
 
 import asyncio
 import jetson.inference
-from jetson_tello import decoded_frame_to_cuda, FrameDecodeError, H264DecoderAsync
+from jetson_tello import decoded_frame_to_cuda, H264DecoderAsync
 
 from ast import literal_eval
 with open("frames.txt", "r") as f:

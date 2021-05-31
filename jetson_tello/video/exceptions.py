@@ -1,2 +1,2 @@
-class FrameDecodeError(Exception):
+class NoFrameData(Exception):
     pass

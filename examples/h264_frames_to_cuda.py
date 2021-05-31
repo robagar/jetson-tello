@@ -2,7 +2,7 @@
 
 from pathlib import Path
 import jetson.utils
-from jetson_tello import h264_frame_to_cuda, FrameDecodeError
+from jetson_tello import h264_frame_to_cuda, NoFrame
 
 from ast import literal_eval
 with open("frames.txt", "r") as f:
@@ -10,18 +10,18 @@ with open("frames.txt", "r") as f:
 
 Path("h264_frames_to_cuda").mkdir(exist_ok=True)
 
-i = 1
 for frame in frames:
     try:
-        cuda, width, height = h264_frame_to_cuda(frame)
+        decoded_frame, cuda = h264_frame_to_cuda(frame)
 
+        i = decoded_frame.number
         print(f'frame {i}:')
         print(cuda)
 
         file_path = f'h264_frames_to_cuda/frame-{i}.jpg'
-        jetson.utils.saveImageRGBA(file_path, cuda, width, height)
+        jetson.utils.saveImageRGBA(file_path, cuda, decoded_frame.width, decoded_frame.height)
         print(f'saved as {file_path}')
         i += 1
-    except FrameDecodeError:
-        print('(decode error, frame skipped)')
+    except NoFrame:
+        print('(no frame data, skipped)')
     print('-----------------------------------------------------------------')
