@@ -1,6 +1,6 @@
 # jetson-tello
 
-![Jetson plus Tello](./docs/images/jetson_plus_tello.png)
+![Jetson plus Tello](https://github.com/robagar/jetson-tello/blob/main/docs/images/jetson_plus_tello.png)
 
 Utility code for using the NVIDIA [Jetson](https://developer.nvidia.com/embedded/jetson-nano-developer-kit) and [tello-asyncio](https://tello-asyncio.readthedocs.io/en/latest/) to interact with the [Tello EDU](https://www.ryzerobotics.com/tello-edu) drone.
 
