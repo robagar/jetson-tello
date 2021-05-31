@@ -1,8 +1,8 @@
 from .classes import coco_classes_by_id, coco_classes_by_name
 
 class InvalidCocoClassError(Exception):
-    def __init__(self, id_or_name):
-        super().__init__(f'invalid COCO class: {id_or_name}')
+    def __init__(self, value):
+        super().__init__(f'invalid COCO class: {value}')
 
 def get_coco_class_by_id(id):
     try:
@@ -18,8 +18,17 @@ def get_coco_class_by_name(name):
         pass
     raise InvalidCocoClassError(name)
 
-def get_coco_class(id_or_name):
-    if isinstance(id_or_name, str):
-        return get_coco_class_by_name(id_or_name)
-    else:
-        return get_coco_class_by_id(id_or_name)
+def get_coco_class(value):
+
+    if isinstance(value, int):
+        return get_coco_class_by_id(value)
+
+    if isinstance(value, str):
+        return get_coco_class_by_name(value)
+
+    try:
+        return get_coco_class_by_id(value.ClassID)
+    except AttributeError:
+        pass
+
+    raise InvalidCocoClassError(value)     
