@@ -6,6 +6,13 @@ from .types import DecodedFrame
 
 
 def decode_h264_frame(h264_frame):
+    '''
+    Attempt to decode an h.264 encoded frame.
+
+    :param bytes h624_frame: The encoded frame data
+    :rtype: :class:`jetson_tello.types.DecodedFrame`
+    :throws: :class:`jetson_tello.exceptions.NoFrameData`
+    '''
     fn = decode_h264_frame
     if not hasattr(fn, 'decoder'):
         fn.decoder = h264decoder.H264Decoder()
@@ -22,12 +29,27 @@ def decode_h264_frame(h264_frame):
 
 
 def decoded_frame_to_numpy_array(decoded_frame):
+    '''
+    Takes a decoded frame and returns a NumPy array of the RGB values.
+
+    :param decoded_frame:
+    :type decoded_frame: :class:`jetson_tello.types.DecodedFrame`
+    :rtype: :class:`numpy.array`
+    '''
+
     (frame_number, width, height, data) = decoded_frame
     flat_array = np.frombuffer(data, dtype=np.ubyte)
     return np.reshape(flat_array, (height, width, 3))
 
 
 def decoded_frame_to_cuda(decoded_frame):
+    '''
+    Loads frame data into CUDA memory.
+
+    :param decoded_frame:
+    :type decoded_frame: :class:`jetson_tello.types.DecodedFrame`
+    :rtype: :class:`cudaImage`
+    '''
     numpy_array = decoded_frame_to_numpy_array(decoded_frame)
     return jetson.utils.cudaFromNumpy(numpy_array)
 
@@ -44,7 +66,7 @@ def h264_frame_to_numpy_array(h264_frame):
     decoded_frame = decode_h264_frame(h264_frame)
     numpy_array = decoded_frame_to_numpy_array(decoded_frame)
     return decoded_frame, numpy_array
-    
+
 
 def h264_frame_to_cuda(h264_frame):
     '''
