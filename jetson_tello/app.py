@@ -2,8 +2,8 @@
 
 import asyncio
 from inspect import isawaitable
-from jetson_tello import H264DecoderAsync, decoded_frame_to_cuda
 from tello_asyncio import Tello
+from .video import H264DecoderAsync, decoded_frame_to_cuda
 
 
 def run_jetson_tello_app(fly, process_frame, drone=None, on_frame_decoded=None, wait_for_wifi=True):
