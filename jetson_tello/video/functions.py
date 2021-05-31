@@ -1,5 +1,15 @@
-import jetson.utils
-import h264decoder # see https://github.com/DaWelter/h264decoder for installation instructions
+try:
+    import jetson.utils
+except ImportError:
+    print('ImportError - failed to import jetson.utils')
+    print('Please visit https://github.com/dusty-nv/jetson-inference and follow the instructions to build and install')
+
+try:
+    import h264decoder
+except ImportError:
+    print('ImportError - failed to import h264decoder')
+    print('h264decoder requires manual building and installation - please see https://github.com/robagar/h264decoder for installation instructions')
+
 import numpy as np
 from .exceptions import NoFrameData
 from .types import DecodedFrame

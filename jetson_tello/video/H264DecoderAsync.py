@@ -1,6 +1,12 @@
 import asyncio
 from inspect import isawaitable
-from h264decoder import H264Decoder # see https://github.com/DaWelter/h264decoder for installation instructions
+
+try:
+    from h264decoder import H264Decoder
+except ImportError:
+    print('ImportError - failed to import h264decoder.H264Decoder')
+    print('h264decoder requires manual building and installation - please see https://github.com/robagar/h264decoder for installation instructions')
+
 from .types import DecodedFrame
 
 
