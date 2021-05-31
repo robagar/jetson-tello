@@ -1,6 +1,9 @@
 from collections import namedtuple
 
 CocoClass = namedtuple('CocoClass', 'id name')
+CocoClass.__doc__ = 'Common Objects in Context class'
+CocoClass.id.__doc__ = 'Class ID'
+CocoClass.name.__doc__ = 'Human readable name or label' 
 
 coco_classes_by_id = [
     CocoClass(0, "unlabeled"),
