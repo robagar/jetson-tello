@@ -10,7 +10,7 @@ Created for my autonomous drone hobby project, [drone-braain](https://github.com
 
 Package [jetson-tello](https://pypi.org/project/jetson-tello/) on PyPi. 
 
-Full documentation on [Read the Docs](https://tello-asyncio.readthedocs.io/en/latest/).
+Full documentation on [Read the Docs](https://jetson-tello.readthedocs.io/en/latest/).
 
 ## Prerequisites
 
