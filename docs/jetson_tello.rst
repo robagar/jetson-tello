@@ -1,3 +1,11 @@
+jetson\_tello.app
+-------------------
+
+.. automodule:: jetson_tello.app
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 jetson\_tello.coco
 -------------------
