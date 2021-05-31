@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(name='jetson_tello',
-      version='1.1.2',
+      version='1.1.3',
       description='Tello drone integration with Jetson',
       long_description=long_description,
       long_description_content_type="text/markdown",
