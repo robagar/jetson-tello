@@ -89,6 +89,8 @@ def run_jetson_tello_app(fly, process_frame, drone=None, on_frame_decoded=None, 
             for task in unfinished:
                 task.cancel()
             await asyncio.wait(unfinished)
+        except Exception as e:
+            print(f'Exception caught: {e}')
         finally:
             await drone.stop_video()
             await drone.disconnect()
