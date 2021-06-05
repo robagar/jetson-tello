@@ -1,5 +1,5 @@
 import asyncio
-from inspect import isawaitable
+from inspect import iscoroutinefunction
 
 try:
     from h264decoder import H264Decoder
@@ -42,7 +42,7 @@ class H264DecoderAsync:
                     self._frame_number += 1
                     self._decoded_frame = DecodedFrame(self._frame_number, width, height, frame_data)
                     if on_frame_decoded:
-                        if isawaitable(on_frame_decoded):
+                        if iscoroutinefunction(on_frame_decoded):
                             await on_frame_decoded(self._decoded_frame)
                         else:
                             on_frame_decoded(self._decoded_frame)

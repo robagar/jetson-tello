@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import asyncio
-from inspect import isawaitable
+from inspect import iscoroutinefunction
 from tello_asyncio import Tello
 from .video import H264DecoderAsync, decoded_frame_to_cuda
 
@@ -73,7 +73,7 @@ def run_jetson_tello_app(fly, process_frame, drone=None, on_frame_decoded=None, 
                     continue
 
                 # call callback
-                if isawaitable(process_frame):
+                if iscoroutinefunction(process_frame):
                     await process_frame(drone, frame, cuda)
                 else:
                     process_frame(drone, frame, cuda)
