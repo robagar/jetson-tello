@@ -19,6 +19,6 @@ setup(name='jetson_tello',
       zip_safe=False,
       python_requires=">=3.6",
       install_requires=[
-        'tello-asyncio >= 1.6.0',
-        'numpy >= 1.20.3'
+        'tello-asyncio >= 2.0.0',
+        'numpy >= 1.13.3'
       ])
