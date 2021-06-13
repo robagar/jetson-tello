@@ -3,7 +3,7 @@
 import asyncio
 from inspect import iscoroutinefunction
 from tello_asyncio import Tello
-from .video import H264DecoderAsync, decoded_frame_to_cuda
+from tello_asyncio_video import run_tello_video_app
 
 
 def run_jetson_tello_app(fly, process_frame, drone=None, on_frame_decoded=None, wait_for_wifi=True):
@@ -34,70 +34,90 @@ def run_jetson_tello_app(fly, process_frame, drone=None, on_frame_decoded=None, 
     :type wait_for_wifi: bool 
     '''
 
-    if not drone:
-        drone = Tello()
-
-    async def main():
-        if wait_for_wifi:
-            print('[main] waiting for wifi...')
-            await drone.wifi_wait_for_network()
-    
-        await drone.connect()
-
-        # begin video stream
-        await drone.start_video()
-        decoder = H264DecoderAsync()
-
-        async def watch_video():
-            ''' 
-            Receive and decode all frames from the drone. Decoding each frame
-            often relies on previous frame data, so all frames must be decoded.
-            '''
-            print('[watch video] START')
-            await decoder.decode_frames(drone.video_stream, on_frame_decoded)
-            print('[watch video] END')
-
-        async def process_frames():
-            ''' 
-            Process frames when available without falling behind
-            '''
-            print('[process frames] START')
-            while True:
-                # wait for next frame, skipping any that arrived during last iteration
-                frame = await decoder.decoded_frame
-
-                # load frame image into CUDA memory
-                try:
-                    cuda = decoded_frame_to_cuda(frame)
-                except Exception as e:
-                    continue
-
-                # call callback
-                if iscoroutinefunction(process_frame):
-                    await process_frame(drone, frame, cuda)
-                else:
-                    process_frame(drone, frame, cuda)
-            print('[process frames] END')
-
+    async def process_cuda_frame(frame):
+        # load frame image into CUDA memory
         try:
-            # run all together until `fly` is complete
-            finished, unfinished = await asyncio.wait(
-                [fly(drone), watch_video(), process_frames()], 
-                return_when=asyncio.FIRST_COMPLETED)
-
-            # clean up
-            for task in unfinished:
-                task.cancel()
-            await asyncio.wait(unfinished)
+            cuda = decoded_frame_to_cuda(frame)
         except Exception as e:
-            print(f'Exception caught: {e}')
-        finally:
-            await drone.stop_video()
-            await drone.disconnect()
+            continue
 
-    # run asyncio event loop
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+        # call callback
+        if iscoroutinefunction(process_frame):
+            await process_frame(drone, frame, cuda)
+        else:
+            process_frame(drone, frame, cuda)
+
+
+    run_tello_video_app(fly, 
+                        process_frame=process_cuda_frame, 
+                        on_frame_decoded=on_frame_decoded, 
+                        drone=drone, 
+                        wait_for_wifi=wait_for_wifi)
+
+    # if not drone:
+    #     drone = Tello()
+
+    # async def main():
+    #     if wait_for_wifi:
+    #         print('[main] waiting for wifi...')
+    #         await drone.wifi_wait_for_network()
+    
+    #     await drone.connect()
+
+    #     # begin video stream
+    #     await drone.start_video()
+    #     decoder = H264DecoderAsync()
+
+    #     async def watch_video():
+    #         ''' 
+    #         Receive and decode all frames from the drone. Decoding each frame
+    #         often relies on previous frame data, so all frames must be decoded.
+    #         '''
+    #         print('[watch video] START')
+    #         await decoder.decode_frames(drone.video_stream, on_frame_decoded)
+    #         print('[watch video] END')
+
+    #     async def process_frames():
+    #         ''' 
+    #         Process frames when available without falling behind
+    #         '''
+    #         print('[process frames] START')
+    #         while True:
+    #             # wait for next frame, skipping any that arrived during last iteration
+    #             frame = await decoder.decoded_frame
+
+    #             # load frame image into CUDA memory
+    #             try:
+    #                 cuda = decoded_frame_to_cuda(frame)
+    #             except Exception as e:
+    #                 continue
+
+    #             # call callback
+    #             if iscoroutinefunction(process_frame):
+    #                 await process_frame(drone, frame, cuda)
+    #             else:
+    #                 process_frame(drone, frame, cuda)
+    #         print('[process frames] END')
+
+    #     try:
+    #         # run all together until `fly` is complete
+    #         finished, unfinished = await asyncio.wait(
+    #             [fly(drone), watch_video(), process_frames()], 
+    #             return_when=asyncio.FIRST_COMPLETED)
+
+    #         # clean up
+    #         for task in unfinished:
+    #             task.cancel()
+    #         await asyncio.wait(unfinished)
+    #     except Exception as e:
+    #         print(f'Exception caught: {e}')
+    #     finally:
+    #         await drone.stop_video()
+    #         await drone.disconnect()
+
+    # # run asyncio event loop
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(main())
 
 
 

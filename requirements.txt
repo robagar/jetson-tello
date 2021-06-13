@@ -1,2 +1,3 @@
 numpy>=1.13.3
 tello-asyncio>=2.0.0
+tello-asyncio-video>=1.0.0

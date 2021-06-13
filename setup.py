@@ -20,5 +20,6 @@ setup(name='jetson_tello',
       python_requires=">=3.6",
       install_requires=[
         'tello-asyncio >= 2.0.0',
+        'tello-asyncio-video>=1.0.0',
         'numpy >= 1.13.3'
       ])
